@@ -1,5 +1,5 @@
 # Coral-RestAPI
-Make a REST API server to process data sent form HTML Form.
+Make a REST API server to process data sent from HTML Form.
 
 Create a folder called "templates".
 Put form.html in "templates" folder.
