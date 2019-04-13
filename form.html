@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<style>
+
+body {
+    background:url(https://inspiredology.com/wp-content/uploads/2010/04/maidu_color.jpg);
+}
+.container{
+	position:absolute;
+	margin-top:200px;
+	margin-left:150px;
+
+}
+.form_bg {
+	float:left;
+	position:relative;
+    background-color:#eee;
+    color:#666;
+    padding:20px;
+    border-radius:10px;
+    position:relative;
+    border:1px solid #fff;
+    width: 470px;
+    height: 590px;
+    box-shadow: rgba(0, 0, 0, 0.6) 40px 40px 40px;
+}
+.align-center {
+    text-align:center;
+}
+
+h6{
+    color:red;
+    text-align: right;
+}
+
+span{
+    color:red;
+    text-align: center;
+}
+input:invalid {
+  border: 2px solid red;
+}
+
+input:valid {
+  border: 2px solid green;
+}
+
+
+.container .search-container {
+  float:right;
+  position:relative;
+}
+
+.container .search-container button {
+  float:right;
+  padding:6px 10px;
+  margin-top:8px;
+  background:#ddd;
+  font-size:17px;
+  border-radius:5px;
+  cursor:pointer;
+}
+
+.container .search-container button:hover {
+  background:#ccc;
+}
+
+.container .search-container input[type=text] {
+  padding:6px;
+  margin-top:8px;
+  width:500px;
+  font-size:17px;
+  border-radius:5px;
+}
+
+.container .display-container{
+	display:none;
+	background: #E8E8E8;
+	width:350px;
+	height:180px;
+	border:2px solid black;
+	position:relative;
+	margin:auto;
+	left:300px;
+	top:100px;
+	PADDING:10px;
+}
+tr td th{
+	border:2px solid black;
+}
+
+</style>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="form_bg">
+               <form id="register-form">
+                    <h2 class="text-center">FORM</h2>
+                    <center><span id = "field">All Fields Mandatory</span></center>
+                    <br>
+                    <br>    
+                    <div class="from-group">
+                    	<label>Username:</label>
+                        <input type="text" class="form-control" placeholder=" Username" name="username" required  />
+                        <span id ="input1"></span>
+                    </div>
+                    <div class="form-group">
+                    	<label>Password:</label>
+                        <input type="password"  class="form-control" placeholder="Password" name="password" required  />
+                    	<span id = "input2"></span>
+                    </div>
+                    <div class="form-group">
+                    	<label>Email:</label>
+                        <input type="email"  class="form-control" placeholder="Email" name="email" required  />
+                        <span id="input3"></span>
+                    </div>
+                    <div class="form-group">
+                    	<label>Phone No.:</label>
+                        <input type="tel"  class="form-control" placeholder="Mobile No." pattern ="[0-9]{10}" name="phone" required><span id="input4"></span><h6>(Format:1234567890)</h6>
+                    	
+                    </div>
+                    <br>
+                    <div>
+                        <div class="align-center">
+                            <button type = "button" class="btn btn-primary" name="btn-signup" onclick ="formSubmit(this.form)">
+                               Submit
+                            </button>
+                        </div>
+                </form>
+            </div>  
+        </div>
+        <div class="search-container">
+	    	<form>
+		    	<input type="text" placeholder="Search.." name="search">
+		    	<button type="button" onclick="searchMail(this.form)"><i class="fa fa-search"></i></button>
+	    	</form>
+  		</div>
+
+  		<div class="display-container">
+  		</div>
+        
+	</div>
+	
+</body>
+
+<script>
+    function formSubmit(form){
+	        if(validity(form) == false){
+	       		
+	       	}
+	        else{
+	        var username = form.username.value;
+	        var password = form.password.value;
+	        var email = form.email.value;
+	        var phone = form.phone.value;
+	        var xhr = new XMLHttpRequest();
+	        xhr.onreadystatechange = function(){
+	            if(xhr.readyState == 4)
+	            alert(xhr.response);
+	        }
+	        xhr.open("post", "/register", true);
+	        xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	        xhr.send(JSON.stringify({"username":username,"password":password,"email":email,"phone":phone}));
+    	}
+    }
+
+    function validity(form){
+    	//var f = $('#field');
+    	var mailRegex = /^([A-Za-z.!0-9]+)@([A-Za-z0-9]+).com$/
+    	var phoneRegex = /^[0-9]{10}$/
+    	$("#input1").html("")
+    	$("#input2").html("")
+    	$("#input3").html("")
+    	$("#input4").html("")
+    	
+    	if(form.username.value == ""){
+    	 	$("#input1").html("Username invalid");
+    	 	return false;
+    	 }
+    	else if(form.password.value == ""){
+    		$("#input2").html("Password invalid");
+    		return false;
+    	}
+    	else if(form.email.value == "" || form.email.value.match(mailRegex) == null){
+    		$("#input3").html("Email invalid");
+    		return false;
+    	}
+    	else if(form.phone.value.match(phoneRegex) == null){
+    		$("#input4").html("Phone invalid");
+    		return false;
+    	}
+    	return true;
+    	
+    }
+
+    function searchMail(form){
+    	var mail = form.search.value;
+
+    	var xhr = new XMLHttpRequest();
+	    xhr.onreadystatechange = function(){
+	        if(xhr.readyState == 4)
+	    		if(xhr.status === 200){
+	    			var obj = JSON.parse(xhr.response);
+	    			// var table = document.querySelector("#display-table")
+
+	    			var div = document.querySelector(".display-container");
+	    			
+					while(div.firstChild) {
+    					div.removeChild(div.firstChild);
+					}
+
+	    			var text = document.createElement("p")
+					var label = document.createElement("label")
+	    			var br = document.createElement(br);
+					label.innerHTML = "Username:"
+					text.innerHTML = obj.username
+					div.appendChild(label)
+					div.appendChild(text)
+					div.appendChild(br)
+
+					var text = document.createElement("p")
+					var label = document.createElement("label")
+					label.innerHTML = "Email:"
+					text.innerHTML = obj.email
+					div.appendChild(label)
+					div.appendChild(text)
+					div.appendChild(br)
+
+					var text = document.createElement("p")
+					var label = document.createElement("label")
+
+					label.innerHTML = "Phone NO.:"
+					text.innerHTML = obj.phone
+					div.appendChild(label)
+					div.appendChild(text)
+					div.appendChild(br)
+
+					// text.innerHTML = JSON.stringify(obj);
+					//div.appendChild(text);
+	    			div.style.display = "block";
+	    		}
+	    		else{
+	    			alert("No Data found");
+	    		}
+	    	}
+	    xhr.open("post", "/search", true);
+	    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	    xhr.send(JSON.stringify({"emailId":mail}));
+    }
+</script>
+</html>
+
